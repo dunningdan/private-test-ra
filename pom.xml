@@ -86,6 +86,16 @@
                         
         <!-- Maven plugins -->
         <cargo-maven2-plugin.version>1.6.7</cargo-maven2-plugin.version>
+        <versions.java-security-toolkit>1.0.7</versions.java-security-toolkit>
     </properties>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.pixee</groupId>
+                <artifactId>java-security-toolkit</artifactId>
+                
+                <version>${versions.java-security-toolkit}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

@@ -1,5 +1,7 @@
 package org.baeldung.service.impl.query;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -71,7 +73,7 @@ public class MyFeedQueryService implements IMyFeedQueryService {
     // Non API
 
     private List<SyndEntry> getFeedEntries(final String feedUrl) throws IllegalArgumentException, FeedException, IOException {
-        final URL url = new URL(feedUrl);
+        final URL url = Urls.create(feedUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         final SyndFeed feed = new SyndFeedInput().build(new XmlReader(url));
         logger.info("Read feed from url : {}", feedUrl);
         final List<SyndEntry> entries = feed.getEntries();

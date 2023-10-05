@@ -1,5 +1,7 @@
 package org.baeldung.web.controller.general;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -47,7 +49,7 @@ public class HomeController {
     //
 
     private String getOriginalUrl(final String oldUrl) throws IOException {
-        final URL url = new URL(oldUrl);
+        final URL url = Urls.create(oldUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setInstanceFollowRedirects(false);
         final String originalUrl = connection.getHeaderField("Location");
