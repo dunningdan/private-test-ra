@@ -55,7 +55,7 @@ public class RedditTemplate {
     public boolean needsCaptcha() {
         rateLimiter.acquire();
         final String result = redditRestTemplate.getForObject("https://oauth.reddit.com/api/needs_captcha.json", String.class);
-        return result.equalsIgnoreCase("true");
+        return "true".equalsIgnoreCase(result);
     }
 
     public String getNewCaptcha() {

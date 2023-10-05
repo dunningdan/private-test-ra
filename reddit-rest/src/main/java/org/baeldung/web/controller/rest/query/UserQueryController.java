@@ -39,7 +39,7 @@ public class UserQueryController {
             @RequestParam(value = "sortDir", required = false, defaultValue = "asc") final String sortDir, @RequestParam(value = "sort", required = false, defaultValue = "username") final String sort, final HttpServletResponse response) {
         final PagingInfo pagingInfo = new PagingInfo(page, size, userService.countAllUsers());
         response.addHeader("PAGING_INFO", pagingInfo.toString());
-        if (sort.equalsIgnoreCase("scheduledPostsCount")) {
+        if ("scheduledPostsCount".equalsIgnoreCase(sort)) {
             return sortByScheduledPostsCount(page, size, sortDir);
         }
         final List<User> users = userService.getUsersList(page, size, sortDir, sort);
@@ -51,7 +51,7 @@ public class UserQueryController {
     private List<UserQueryDto> sortByScheduledPostsCount(int page, int size, String sortDir) {
         final List<User> allUsers = userService.getAllUsers();
         final List<UserQueryDto> userDtos = allUsers.stream().map(user -> convertUserEntityToDto(user)).collect(Collectors.toList());
-        if (sortDir.equalsIgnoreCase("asc")) {
+        if ("asc".equalsIgnoreCase(sortDir)) {
             return userDtos.stream().sorted((u1, u2) -> Long.compare(u1.getScheduledPostsCount(), u2.getScheduledPostsCount())).skip(page * size).limit(size).collect(Collectors.toList());
         }
         return userDtos.stream().sorted((u1, u2) -> Long.compare(u2.getScheduledPostsCount(), u1.getScheduledPostsCount())).skip(page * size).limit(size).collect(Collectors.toList());
