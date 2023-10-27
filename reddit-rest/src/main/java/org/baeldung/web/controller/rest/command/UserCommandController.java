@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +35,7 @@ public class UserCommandController {
 
     //
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @PostMapping(value = "/registration")
     @ResponseStatus(HttpStatus.OK)
     public void register(final HttpServletRequest request, @RequestBody final UserRegisterCommandDto userDto) {
         final String appUrl = request.getRequestURL().toString().replace(request.getRequestURI(), "") + request.getContextPath();
@@ -44,7 +46,7 @@ public class UserCommandController {
      * used to update current user password
      */
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/password", method = RequestMethod.PUT)
+    @PutMapping(value = "/password")
     @ResponseStatus(HttpStatus.OK)
     public void updateUserPassword(@RequestBody final UserUpdatePasswordCommandDto userDto) {
         userService.updateUserPassword(getCurrentUser(), userDto.getPassword(), userDto.getOldPassword());
@@ -53,7 +55,7 @@ public class UserCommandController {
     /**
      * used to trigger reset password by sending email with reset password token
      */
-    @RequestMapping(value = "/passwordReset", method = RequestMethod.POST)
+    @PostMapping(value = "/passwordReset")
     @ResponseStatus(HttpStatus.OK)
     public void triggerResetPassword(final HttpServletRequest request, @RequestBody final UserTriggerResetPasswordCommandDto userDto) {
         final String appUrl = request.getRequestURL().toString().replace(request.getRequestURI(), "") + request.getContextPath();
@@ -63,7 +65,7 @@ public class UserCommandController {
     /**
      * used to change user password – this command is called after user use password reset token.
      */
-    @RequestMapping(value = "/password", method = RequestMethod.POST)
+    @PostMapping(value = "/password")
     @ResponseStatus(HttpStatus.OK)
     public void changeUserPassword(@RequestBody final UserchangePasswordCommandDto userDto) {
         userService.changeUserPassword(getCurrentUser(), userDto.getPassword());
@@ -72,7 +74,7 @@ public class UserCommandController {
     // admin
 
     @PreAuthorize("hasAuthority('USER_WRITE_PRIVILEGE')")
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateUser(@RequestBody final UserUpdateCommandDto userDto) {
         userService.updateUser(convertToEntity(userDto));

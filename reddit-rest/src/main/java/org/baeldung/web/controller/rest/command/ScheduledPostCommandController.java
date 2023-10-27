@@ -17,7 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,7 +43,7 @@ class ScheduledPostCommandController {
 
     // API
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ScheduledPostDto schedule(final HttpServletRequest request, @RequestBody final ScheduledPostAddCommandDto postDto) throws ParseException {
@@ -50,7 +53,7 @@ class ScheduledPostCommandController {
     }
 
     @PreAuthorize("@resourceSecurityService.isPostOwner(#postDto.uuid)")
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{uuid}")
     @ResponseStatus(HttpStatus.OK)
     public void updatePost(final HttpServletRequest request, @RequestBody final ScheduledPostUpdateCommandDto postDto) throws ParseException {
         final Post post = convertToEntity(postDto);
@@ -58,7 +61,7 @@ class ScheduledPostCommandController {
     }
 
     @PreAuthorize("@resourceSecurityService.isPostOwner(#uuid)")
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable("uuid") final String uuid) {
         scheduledPostService.deletePostByUuid(uuid);

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.baeldung.web.metric.IMetricService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,19 +19,19 @@ class MetricController {
 
     //
 
-    @RequestMapping(value = "/metric", method = RequestMethod.GET)
+    @GetMapping(value = "/metric")
     @ResponseBody
     public Map<String, HashMap<Integer, Integer>> getMetric() {
         return metricService.getFullMetric();
     }
 
-    @RequestMapping(value = "/status-metric", method = RequestMethod.GET)
+    @GetMapping(value = "/status-metric")
     @ResponseBody
     public Map<Integer, Integer> getStatusMetric() {
         return metricService.getStatusMetric();
     }
 
-    @RequestMapping(value = "/metric-graph-data", method = RequestMethod.GET)
+    @GetMapping(value = "/metric-graph-data")
     @ResponseBody
     public Object[][] getMetricGraphData() {
         final Object[][] result = metricService.getGraphData();

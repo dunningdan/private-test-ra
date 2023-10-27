@@ -7,6 +7,7 @@ import org.baeldung.service.query.IRoleQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +20,7 @@ public class RoleQueryController {
     private IRoleQueryService roleService;
 
     @PreAuthorize("hasAuthority('USER_READ_PRIVILEGE')")
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     @ResponseBody
     public List<Role> getRolesList() {
         return roleService.getRolesList();

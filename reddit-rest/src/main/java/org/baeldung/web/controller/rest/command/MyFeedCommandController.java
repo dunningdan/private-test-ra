@@ -13,7 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +35,7 @@ class MyFeedCommandController {
 
     // === API Methods
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public FeedDto addFeed(@RequestBody final FeedAddCommandDto feedDto) {
@@ -42,7 +45,7 @@ class MyFeedCommandController {
     }
 
     @PreAuthorize("@resourceSecurityService.isRssFeedOwner(#feedDto.id)")
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateFeed(@RequestBody final FeedUpdateCommandDto feedDto) {
         final MyFeed feed = modelMapper.map(feedDto, MyFeed.class);
@@ -51,7 +54,7 @@ class MyFeedCommandController {
     }
 
     @PreAuthorize("@resourceSecurityService.isRssFeedOwner(#id)")
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFeed(@PathVariable("id") final Long id) {
         myFeedService.deleteFeedById(id);

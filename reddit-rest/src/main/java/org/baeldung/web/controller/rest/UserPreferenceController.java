@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,14 +29,14 @@ class UserPreferenceController {
 
     //
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     @ResponseBody
     public PreferenceDto getCurrentUserPreference() {
         final Preference pref = getCurrentUser().getPreference();
         return modelMapper.map(pref, PreferenceDto.class);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void update(@RequestBody final PreferenceDto prefDto) {
         final Preference pref = modelMapper.map(prefDto, Preference.class);

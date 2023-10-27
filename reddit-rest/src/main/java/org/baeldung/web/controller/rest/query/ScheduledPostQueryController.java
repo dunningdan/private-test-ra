@@ -19,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,7 +43,7 @@ class ScheduledPostQueryController {
 
     // API - read
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     @ResponseBody
     public final List<ScheduledPostDto> getScheduledPosts(@RequestParam(value = "page", required = false, defaultValue = "0") final int page, @RequestParam(value = "size", required = false, defaultValue = "10") final int size,
             @RequestParam(value = "sortDir", required = false, defaultValue = "asc") final String sortDir, @RequestParam(value = "sort", required = false, defaultValue = "title") final String sort, final HttpServletResponse response) {
@@ -54,7 +55,7 @@ class ScheduledPostQueryController {
         return posts.stream().map(post -> convertToDto(post)).collect(Collectors.toList());
     }
 
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.GET)
+    @GetMapping(value = "/{uuid}")
     @ResponseBody
     public final ScheduledPostDto getPost(@PathVariable("uuid") final String uuid) {
         return convertToDto(scheduledPostService.getPostByUuid(uuid));
